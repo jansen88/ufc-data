@@ -1,10 +1,17 @@
 # ufc-predictor
 
 ## About
-Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
+🥊 Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
 
-## To-do list
-- Scrape UFC data - fighter stats, and match results
-- Pre-processing/EDA/visualisation
+## Features
+✅ COMPLETED ✅:
+- Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data.
+```
+python -m ufc.scraper
+```
+
+🚧 TODO 🚧:
+- Pre-processing/cleaning scraped data
+- EDA / visualisations on cleaned data
 - Build predictive model
 - Visualisation layer on top - potentially a Dash app
