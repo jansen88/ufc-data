@@ -1,257 +1,138 @@
+"""Scrape individual fighter info and career statistics"""
+
 import pandas as pd
 import numpy as np
-import requests
-import re
-from bs4 import BeautifulSoup
+import datetime
 import string
-import random
-import time
 
-def get_soup(url):
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
+from ufc import utils
 
-    return soup
+class FighterScraper():
+    """Scrape individual fighter info and career stats"""
 
-def sleep_randomly():
-    """Sleep for some random time between requests"""
-    sleep_time = np.random.uniform(2,4)
-    time.sleep(sleep_time)
+    def __init__(self, test=False):
+        self.test = test
+        self.fighters_individual_url = None
+        self.curr_time = datetime.datetime.now()
 
-############## Scrape individual fighter info and career statistics ##############
+    ### Key methods for pipeline
 
-def get_individual_fighter_urls(soup):
-    """Scrape individual fighter urls from all fighters stats page"""
+    def get_all_individual_fighter_urls(self):
+        """
+        Each page lists all fighters by initial of surnamee
+        Iterate through each index page to get urls for all individual fighters
+        """
 
-    # links all underlined
-    fighters_individual_url = []
+        letters = list(string.ascii_lowercase)
+        pages = [
+            f"http://ufcstats.com/statistics/fighters?char={letter}&page=all" for letter in letters
+        ]
 
-    link_elements = soup.find_all("a", class_="b-link b-link_style_black")
-    for link in link_elements:
-        if link["href"] not in fighters_individual_url:
-            fighters_individual_url.append(link["href"])
+        fighters_individual_url = []
 
-    return fighters_individual_url 
+        for page_url in pages:
+            soup = utils.get_soup(page_url)
+            fighters_individual_url = fighters_individual_url + self._get_individual_fighter_urls(soup)
+            utils.sleep_randomly()
 
-def get_fighter_stats(fighter_url):
-    """From individual fighter url, scrape key stats"""
+        self.fighters_individual_url = fighters_individual_url
 
-    def _clean_fighter_stat_str(string):
-        return (
-            string
-            .text
-            .strip()
-            .replace("\n", "")
-            .replace(" ", "")
-            .replace('\\', '')
+    def scrape_individual_fighter_urls(self):
+        """Iterate through urls for individual fighters to scrape individual fighter career stats"""
+
+        dfs_list = []
+
+        if self.test:
+            fighters_individual_url = self.fighters_individual_url[0:10]
+        else: 
+            fighters_individual_url = self.fighters_individual_url
+
+        for index, fighter_url in enumerate(fighters_individual_url):
+            fighter_stats = pd.DataFrame(
+                self._get_fighter_stats(fighter_url),
+                index=[0]
+            )
+            dfs_list.append(fighter_stats)
+
+            print(f"{fighter_stats.name[0]} ✔️ ({index+1} of {len(fighters_individual_url)})")
+
+            utils.sleep_randomly()
+
+        fighter_stats_df = pd.concat(dfs_list).reset_index(drop=True)
+        fighter_stats_df["timestamp"] =  self.curr_time
+
+        self.fighter_stats_df = fighter_stats_df
+
+    def write_data(self):
+        self.fighter_stats_df.to_csv("./data/fighter_stats.csv")
+
+
+    ### Helper methods
+
+    def _get_individual_fighter_urls(self, soup):
+        """Scrape individual fighter urls from single index page"""
+
+        # links all underlined
+        fighters_individual_url = []
+
+        link_elements = soup.find_all("a", class_="b-link b-link_style_black")
+        for link in link_elements:
+            if link["href"] not in fighters_individual_url:
+                fighters_individual_url.append(link["href"])
+
+        return fighters_individual_url 
+
+    def _get_fighter_stats(self, fighter_url):
+        """From individual fighter url, scrape key stats"""
+
+        def _clean_fighter_stat_str(string):
+            return (
+                string
+                .text
+                .strip()
+                .replace("\n", "")
+                .replace(" ", "")
+                .replace('\\', '')
+            )
+
+        soup = utils.get_soup(fighter_url)
+
+        # parse fighter name
+        fighter_name = (
+            soup.find("span", class_="b-content__title-highlight").text.strip()
         )
 
-    soup = get_soup(fighter_url)
+        # parse fight record
+        fight_record = (
+            soup
+            .find("span", class_="b-content__title-record")
+            .text
+            .strip()
+            .replace("Record: ", "")
+        )
 
-    # parse fighter name
-    fighter_name = (
-        soup.find("span", class_="b-content__title-highlight").text.strip()
-    )
+        # parse nickname
+        nickname = (
+            soup.find("p", class_="b-content__Nickname").text.strip()
+        )
 
-    # parse fight record
-    fight_record = (
-        soup
-        .find("span", class_="b-content__title-record")
-        .text
-        .strip()
-        .replace("Record: ", "")
-    )
+        # collect to dict
+        fighter_stats_dict = {
+            "name": fighter_name,
+            "fight_record": fight_record,
+            "nickname": nickname,
+        }
 
-    # parse nickname
-    nickname = (
-        soup.find("p", class_="b-content__Nickname").text.strip()
-    )
+        # parse all other fighter details
+        all = (
+            soup
+            .find_all("li", class_="b-list__box-list-item b-list__box-list-item_type_block")
+        )
 
-    # collect to dict
-    fighter_stats_dict = {
-        "name": fighter_name,
-        "fight_record": fight_record,
-        "nickname": nickname,
-    }
+        fighter_stats_list = [_clean_fighter_stat_str(x) for x in all]
+        add_dict = {item.split(":")[0]: item.split(":")[1] for item in fighter_stats_list if ":" in item}
 
-    # parse all other fighter details
-    all = (
-        soup
-        .find_all("li", class_="b-list__box-list-item b-list__box-list-item_type_block")
-    )
+        # append other fighter details to one dict
+        fighter_stats_dict.update(add_dict)
 
-    fighter_stats_list = [_clean_fighter_stat_str(x) for x in all]
-    add_dict = {item.split(":")[0]: item.split(":")[1] for item in fighter_stats_list if ":" in item}
-
-    # append other fighter details to one dict
-    fighter_stats_dict.update(add_dict)
-
-    return fighter_stats_dict
-
-
-# TODO - move to a pipeline
-# Each page lists all fighters by initial of surname
-## Iterate through each index page to get urls for all individual fighters
-letters = list(string.ascii_lowercase)
-pages = [
-    f"http://ufcstats.com/statistics/fighters?char={letter}&page=all" for letter in letters
-]
-
-fighters_individual_url = []
-
-for page_url in pages:
-    soup = get_soup(page_url)
-    fighters_individual_url = fighters_individual_url + get_individual_fighter_urls(soup)
-    sleep_randomly()
-
-## Iterate through urls for individual fighters to scrape individual fighter career stats
-dfs_list = []
-
-for index, fighter_url in enumerate(fighters_individual_url[145:245]):
-    fighter_stats = pd.DataFrame(
-        get_fighter_stats(fighter_url),
-        index=[0]
-    )
-    dfs_list.append(fighter_stats)
-
-    print(f"{fighter_stats.name[0]} ✔️ ({index+1} of {len(fighters_individual_url)})")
-
-    sleep_randomly()
-
-fighter_stats_df = pd.concat(dfs_list).reset_index()
-
-
-############## Scrape historic event info ##############
-
-def get_individual_event_urls(url):
-    """Scrape index page for all events for individual event urls"""
-
-    soup = get_soup(completed_events_url)
-
-    link_elements = soup.find_all("a", class_="b-link b-link_style_black")
-    event_links = [i["href"] for i in link_elements]
-    # event_names = [i.text.strip() for i in link_elements]
-
-    return event_links
-
-def get_raw_event_data(event_url):
-    """From individual event url, scrape raw event data to df"""
-
-    soup = get_soup(event_url)
-
-    # parse event name
-    event_name = soup.find("span", class_="b-content__title-highlight").text.strip()
-
-    # parse event date and location
-    fight_details = soup.find_all("li", class_="b-list__box-list-item")
-
-    event_date = (
-        fight_details[0]
-        .text
-        .replace("\n", "")
-        .replace("Date:" , "")
-        .replace(",", "")
-        .strip()
-    )
-
-    event_location = (
-        fight_details[1]
-        .text
-        .replace("\n", "")
-        .replace("Location:" , "")
-        .strip()
-    )
-
-    ### parse event results - table to pandas DataFrame
-    table = soup.find("table", "b-fight-details__table")
-
-    table_data = []
-
-    # get table header
-    col_names = []
-    for header in table.find_all("th", class_="b-fight-details__table-col"):
-        col_names.append(header.text.strip())
-
-    # get table rows
-    for row in table.find_all('tr'):
-        row_data = []
-        for cell in row.find_all('td'):
-            row_data.append(
-                cell.text.strip().replace("\n", "")
-            )
-        table_data.append(row_data)
-
-    # collect to pandas DataFrame
-    table_data[0] = col_names
-    event_results = pd.DataFrame(table_data)
-    event_results.columns = event_results.iloc[0]
-    event_results = event_results[1:]
-
-    # add event details
-    event_details = pd.DataFrame({
-        "event_name": event_name,
-        "event_date": event_date,
-        "event_location": event_location
-    }, index=[0])
-
-    event_results["key"] = 0
-    event_details["key"] = 0
-
-    raw_event_results = event_details.merge(
-        event_results,
-        on="key"
-    )
-
-    raw_event_results.drop("key", axis=1, inplace=True)
-
-    return raw_event_results
-
-def clean_raw_event_results(raw_event_results):
-
-    event_results = raw_event_results.copy()
-
-    # split Fighter col into two
-    event_results[["fighter1", "fighter2"]] =\
-        event_results["Fighter"].str.split("                          ", expand=True)
-    
-    event_results["outcome"] = np.select(
-        condlist=[
-            event_results["W/L"] == "win",
-            event_results["W/L"] == "drawdraw",
-            event_results["W/L"] == "ncnc"
-        ],
-        choicelist=[
-            "fighter1",
-            "Draw",
-            "No contest"
-        ],
-        default=None
-    )
-
-    return event_results[[
-        "event_name", "event_date", "event_location", "Weight class", "fighter1", "fighter2", "outcome",
-        "Kd", "Str", "Td", "Sub", "Method", "Round", "Time"
-    ]]
-
-
-# TODO move workflow to pipeline
-
-completed_events_url = "http://ufcstats.com/statistics/events/completed?page=all"
-
-## Get individual urls of all events from index page
-event_links = get_individual_event_urls(completed_events_url)
-
-## Scrape event results from each page
-results_list = []
-
-for index, event_url in enumerate(event_links):
-    raw = get_raw_event_data(event_url)
-    clean = clean_raw_event_results(raw)
-
-    results_list.append(clean)
-
-    print(f"{clean.event_name[0]} ✔️ ({index+1} of {len(event_links)})")
-
-    sleep_randomly()
-
-event_results = pd.concat(results_list).reset_index()
+        return fighter_stats_dict
