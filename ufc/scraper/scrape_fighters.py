@@ -118,7 +118,7 @@ for index, fighter_url in enumerate(fighters_individual_url[145:245]):
 
     sleep_randomly()
 
-fighter_stats_df = pd.concat(dfs_list)
+fighter_stats_df = pd.concat(dfs_list).reset_index()
 
 
 ############## Scrape historic event info ##############
@@ -214,15 +214,44 @@ def clean_raw_event_results(raw_event_results):
     event_results[["fighter1", "fighter2"]] =\
         event_results["Fighter"].str.split("                          ", expand=True)
     
-    return event_results
+    event_results["outcome"] = np.select(
+        condlist=[
+            event_results["W/L"] == "win",
+            event_results["W/L"] == "drawdraw",
+            event_results["W/L"] == "ncnc"
+        ],
+        choicelist=[
+            "fighter1",
+            "Draw",
+            "No contest"
+        ],
+        default=None
+    )
 
+    return event_results[[
+        "event_name", "event_date", "event_location", "Weight class", "fighter1", "fighter2", "outcome",
+        "Kd", "Str", "Td", "Sub", "Method", "Round", "Time"
+    ]]
+
+
+# TODO move workflow to pipeline
 
 completed_events_url = "http://ufcstats.com/statistics/events/completed?page=all"
+
+## Get individual urls of all events from index page
 event_links = get_individual_event_urls(completed_events_url)
 
-event_url = event_links[0]
-raw_event_results = get_raw_event_data(event_url)
+## Scrape event results from each page
+results_list = []
 
+for index, event_url in enumerate(event_links):
+    raw = get_raw_event_data(event_url)
+    clean = clean_raw_event_results(raw)
 
+    results_list.append(clean)
 
+    print(f"{clean.event_name[0]} ✔️ ({index+1} of {len(event_links)})")
 
+    sleep_randomly()
+
+event_results = pd.concat(results_list).reset_index()
