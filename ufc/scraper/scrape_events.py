@@ -55,7 +55,7 @@ class EventScraper():
         self.event_results = event_results
 
     def write_data(self):
-        self.event_results.to_csv("./data/event_results.csv")
+        self.event_results.to_csv("./data/event_results.csv", index=False)
 
     def _get_raw_event_data(self, event_url):
         """From individual event url, scrape raw event data to df"""
