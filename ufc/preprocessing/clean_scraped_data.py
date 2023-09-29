@@ -1,12 +1,15 @@
+"""
+Cleaning steps:
+- Rename columns
+- Fix date types - e.g. dates
+- Split fight record W-L-D into separate columns for W, L, D
+- Convert measurements for height/weight/reach from strings in imperial
+units to metric
+- Check for and drop duplicates in fighters
+"""
+
 import pandas as pd
 import numpy as np
-
-def read_scraped_events():
-    return pd.read_csv("./data/event_results.csv")
-
-def read_scraped_fighters():
-    return pd.read_csv("./data/fighter_stats.csv")
-
 
 def clean_events(raw_events):
     """Preprocessing for modelling"""
@@ -24,7 +27,7 @@ def clean_events(raw_events):
     # Rename columns
     cleaned_events = cleaned_events.rename({
         "Weight class": "weight_class"
-    })
+    }, axis=1)
 
     # Convert date types
     cleaned_events["event_date"] = pd.to_datetime(
@@ -34,7 +37,7 @@ def clean_events(raw_events):
     return cleaned_events
 
 
-def convert_height_imperial_to_metric(height):
+def _convert_height_imperial_to_metric(height):
     try:
         # Split the height string into feet and inches
         if ("'" in height) & ("\"" in height):
@@ -55,11 +58,28 @@ def convert_height_imperial_to_metric(height):
 
 
 
-def convert_weight_imperial_to_metric(weight):
+def _convert_weight_imperial_to_metric(weight):
     pound = 0.453592
     kg = weight * pound
 
     return kg
+
+def _drop_duplicates(fighters):
+    fighters["dupe_count"] = (
+        fighters
+        .groupby("name", as_index=False)
+        ['name']
+        .transform("count")
+    )
+
+    if len(fighters[fighters.dupe_count > 1]) > 0:
+        print("Dropping duplicates...")
+        print(fighters[fighters.dupe_count > 1])
+
+    fighters = fighters[fighters["dupe_count"] == 1]
+    fighters = fighters.drop("dupe_count", axis=1)
+
+    return fighters
 
 
 def clean_fighters(raw_fighters):
@@ -78,15 +98,15 @@ def clean_fighters(raw_fighters):
     cleaned_fighters["curr_weight"] = cleaned_fighters["Weight"] \
         .str.replace("lbs.", "") \
         .transform(lambda x: float(x)) \
-        .pipe(convert_weight_imperial_to_metric)
+        .pipe(_convert_weight_imperial_to_metric)
     
     cleaned_fighters["curr_height"] = cleaned_fighters["Height"] \
         .transform(lambda x: str(x)) \
-        .apply(lambda x: convert_height_imperial_to_metric(x))
+        .apply(lambda x: _convert_height_imperial_to_metric(x))
     
     cleaned_fighters["reach"] = cleaned_fighters["Reach"] \
         .transform(lambda x: str(x)) \
-        .apply(lambda x: convert_height_imperial_to_metric(x))
+        .apply(lambda x: _convert_height_imperial_to_metric(x))
     
     # convert date types
     cleaned_fighters["dob"] = pd.to_datetime(
@@ -110,7 +130,7 @@ def clean_fighters(raw_fighters):
         "dob": "dob",
         "SLpM": "sig_strikes_landed_pm",
         "Str.Acc.": "sig_strikes_accuracy",
-        "SApM": "sig_strikes_abosrbed_pm",
+        "SApM": "sig_strikes_absorbed_pm",
         "Str.Def": "sig_strikes_defended",
         "TDAvg.": "takedown_avg_per15m",
         "TDAcc.": "takedown_accuracy",
@@ -121,14 +141,8 @@ def clean_fighters(raw_fighters):
     cleaned_fighters = cleaned_fighters.rename(rename_cols, axis=1)
     cleaned_fighters = cleaned_fighters[rename_cols.values()]
 
+    # Drop duplicates
+    cleaned_fighters = _drop_duplicates(cleaned_fighters)
+
     return cleaned_fighters
 
-
-
-
-
-raw_events = read_scraped_events()
-cleaned_events = clean_events(raw_events)
-
-raw_fighters = read_scraped_fighters()
-cleaned_fighters = clean_fighters(raw_fighters)

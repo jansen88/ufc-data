@@ -5,9 +5,13 @@
 
 ## Features
 ✅ COMPLETED ✅:
-- Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data.
+- Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data.\
 ```
 python -m ufc.scraper
+```
+- Pre-processing to prep scraped data for modelling - see /data/prepped_data_for_modelling.csv
+```
+python -m ufc.preprocessing
 ```
 
 🚧 TODO 🚧:
