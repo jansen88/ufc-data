@@ -5,3 +5,6 @@ def read_scraped_events():
 
 def read_scraped_fighters():
     return pd.read_csv("./data/fighter_stats.csv")
+
+def read_data_for_modelling():
+    return pd.read_csv("./data/prepped_data_for_modelling.csv")
