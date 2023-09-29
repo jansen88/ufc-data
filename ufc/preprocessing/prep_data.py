@@ -8,6 +8,10 @@ by default fighter1 is always the winner.
 renamed as fighter1_*, fighter2_*
     - See code for detail of stats kept as features
 - Drop missing values
+
+TODO
+- Add fighter record prior to fight as feature
+
 """
 
 import pandas as pd
