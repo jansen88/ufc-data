@@ -57,7 +57,7 @@ class EventScraper():
     def write_data(self):
         self.event_results.to_csv("./data/event_results.csv", index=False)
 
-    def _get_raw_event_data(self, event_url):
+    def _get_raw_event_data(self, event_url) -> pd.DataFrame:
         """From individual event url, scrape raw event data to df"""
 
         soup = utils.get_soup(event_url)
@@ -129,7 +129,7 @@ class EventScraper():
 
         return raw_event_results
 
-    def _clean_raw_event_results(self, raw_event_results):
+    def _clean_raw_event_results(self, raw_event_results) -> pd.DataFrame:
 
         event_results = raw_event_results.copy()
 

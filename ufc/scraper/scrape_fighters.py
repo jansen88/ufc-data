@@ -82,7 +82,7 @@ class FighterScraper():
 
         return fighters_individual_url 
 
-    def _get_fighter_stats(self, fighter_url):
+    def _get_fighter_stats(self, fighter_url) -> dict:
         """From individual fighter url, scrape key stats"""
 
         def _clean_fighter_stat_str(string):

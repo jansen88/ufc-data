@@ -20,17 +20,17 @@ import numpy as np
 from ufc import constants
 
 
-def prep_data_for_modelling(cleaned_events, cleaned_fighters):
+def prep_data_for_modelling(cleaned_events, cleaned_fighters) -> pd.DataFrame:
     # Filter to more recent years
     # HYPOTHESIS TO CONFIRM - more recent years more relevant
-    df = cleaned_events[cleaned_events["event_date"].dt.year >= 2017]
+    df = cleaned_events[cleaned_events["event_date"].dt.year >= constants.KEEP_YEAR]
 
     # Filter to only outcome where there was a winner - lose ~3% rows
     df = df[df.outcome == "fighter1"]
 
     # Randomly sample to choose swap fighter1 and fighter2 so response
     # is not only fighter1
-    np.random.seed(seed=constants.seed)
+    np.random.seed(seed=constants.SEED)
     df["swap_fighter"] = np.random.choice(
         ["fighter1", "fighter2"],
         size=len(df)

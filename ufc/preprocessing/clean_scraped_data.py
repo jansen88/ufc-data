@@ -11,7 +11,7 @@ units to metric
 import pandas as pd
 import numpy as np
 
-def clean_events(raw_events):
+def clean_events(raw_events) -> pd.DataFrame:
     """Preprocessing for modelling"""
     cleaned_events = raw_events.copy()
     
@@ -37,7 +37,7 @@ def clean_events(raw_events):
     return cleaned_events
 
 
-def _convert_height_imperial_to_metric(height):
+def _convert_height_imperial_to_metric(height) -> float:
     try:
         # Split the height string into feet and inches
         if ("'" in height) & ("\"" in height):
@@ -58,13 +58,13 @@ def _convert_height_imperial_to_metric(height):
 
 
 
-def _convert_weight_imperial_to_metric(weight):
+def _convert_weight_imperial_to_metric(weight) -> float:
     pound = 0.453592
     kg = weight * pound
 
     return kg
 
-def _drop_duplicates(fighters):
+def _drop_duplicates(fighters) -> pd.DataFrame:
     fighters["dupe_count"] = (
         fighters
         .groupby("name", as_index=False)
@@ -82,7 +82,7 @@ def _drop_duplicates(fighters):
     return fighters
 
 
-def clean_fighters(raw_fighters):
+def clean_fighters(raw_fighters) -> pd.DataFrame:
     """Preprecessing for modelling"""
 
     cleaned_fighters = raw_fighters.copy()
