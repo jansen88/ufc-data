@@ -11,7 +11,7 @@ units to metric
 import pandas as pd
 import numpy as np
 
-def clean_events(raw_events):
+def clean_events(raw_events) -> pd.DataFrame:
     """Preprocessing for modelling"""
     cleaned_events = raw_events.copy()
     
@@ -37,7 +37,7 @@ def clean_events(raw_events):
     return cleaned_events
 
 
-def _convert_height_imperial_to_metric(height):
+def _convert_height_imperial_to_metric(height) -> float:
     try:
         # Split the height string into feet and inches
         if ("'" in height) & ("\"" in height):
@@ -58,13 +58,13 @@ def _convert_height_imperial_to_metric(height):
 
 
 
-def _convert_weight_imperial_to_metric(weight):
+def _convert_weight_imperial_to_metric(weight) -> float:
     pound = 0.453592
     kg = weight * pound
 
     return kg
 
-def _drop_duplicates(fighters):
+def _drop_duplicates(fighters) -> pd.DataFrame:
     fighters["dupe_count"] = (
         fighters
         .groupby("name", as_index=False)
@@ -82,7 +82,7 @@ def _drop_duplicates(fighters):
     return fighters
 
 
-def clean_fighters(raw_fighters):
+def clean_fighters(raw_fighters) -> pd.DataFrame:
     """Preprecessing for modelling"""
 
     cleaned_fighters = raw_fighters.copy()
@@ -100,7 +100,7 @@ def clean_fighters(raw_fighters):
         .transform(lambda x: float(x)) \
         .pipe(_convert_weight_imperial_to_metric)
     
-    cleaned_fighters["curr_height"] = cleaned_fighters["Height"] \
+    cleaned_fighters["height"] = cleaned_fighters["Height"] \
         .transform(lambda x: str(x)) \
         .apply(lambda x: _convert_height_imperial_to_metric(x))
     
@@ -116,7 +116,7 @@ def clean_fighters(raw_fighters):
     # convert percentages
     cleaned_fighters[["Str.Acc.", "Str.Def", "TDDef.", "TDAcc."]] = \
         cleaned_fighters[["Str.Acc.", "Str.Def", "TDDef.", "TDAcc."]]\
-            .map(lambda x: pd.to_numeric(x.rstrip('%'))/100)
+            .applymap(lambda x: pd.to_numeric(x.rstrip('%'))/100)
     
     # subset and rename
     rename_cols = {
@@ -124,7 +124,7 @@ def clean_fighters(raw_fighters):
         "curr_wins": "curr_wins",
         "curr_losses": "curr_losses",
         "curr_weight": "curr_weight",
-        "curr_height": "curr_height",
+        "height": "height",
         "reach": "reach",
         "STANCE": "stance",
         "dob": "dob",

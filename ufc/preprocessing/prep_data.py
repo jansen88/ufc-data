@@ -1,5 +1,6 @@
 """
-Data prep steps before modelling
+Data prep steps before modelling - return features available from data without additional calculation steps
+
 - Take clean fighters and events data
 - Because we are predicting response outcome = "fighter1" or "fighter2",
 need to randomly shuffle fighter1 and fighter 2 data from events results -
@@ -9,9 +10,6 @@ renamed as fighter1_*, fighter2_*
     - See code for detail of stats kept as features
 - Drop missing values
 
-TODO
-- Add fighter record prior to fight as feature
-
 """
 
 import pandas as pd
@@ -20,17 +18,17 @@ import numpy as np
 from ufc import constants
 
 
-def prep_data_for_modelling(cleaned_events, cleaned_fighters):
+def prep_data_for_modelling(cleaned_events, cleaned_fighters) -> pd.DataFrame:
     # Filter to more recent years
     # HYPOTHESIS TO CONFIRM - more recent years more relevant
-    df = cleaned_events[cleaned_events["event_date"].dt.year >= 2017]
+    df = cleaned_events[cleaned_events["event_date"].dt.year >= constants.KEEP_YEAR]
 
     # Filter to only outcome where there was a winner - lose ~3% rows
     df = df[df.outcome == "fighter1"]
 
     # Randomly sample to choose swap fighter1 and fighter2 so response
     # is not only fighter1
-    np.random.seed(seed=constants.seed)
+    np.random.seed(seed=constants.SEED)
     df["swap_fighter"] = np.random.choice(
         ["fighter1", "fighter2"],
         size=len(df)
@@ -42,8 +40,10 @@ def prep_data_for_modelling(cleaned_events, cleaned_fighters):
     df["outcome"] = df["swap_fighter"]
 
     # Fetch fighter1, fighter2 stats from fighters
-    features = [
-        'curr_height',
+    keep_attributes = [
+        'height',
+        'curr_weight',
+        "dob",
         'reach',
         'stance',
         'sig_strikes_landed_pm',
@@ -55,16 +55,13 @@ def prep_data_for_modelling(cleaned_events, cleaned_fighters):
         'takedown_defence',
         'submission_avg_attempted_per15m'
     ]
-    keep_but_not_features = [
-        'dob'
-    ]
 
     fighter1 = cleaned_fighters.copy()
-    rename_fighter1_dict = {x:f"fighter1_{x}" for x in features + keep_but_not_features}
+    rename_fighter1_dict = {x:f"fighter1_{x}" for x in keep_attributes}
     fighter1.rename(rename_fighter1_dict, axis=1, inplace=True)
 
     fighter2 = cleaned_fighters.copy()
-    rename_fighter2_dict = {x:f"fighter2_{x}" for x in features + keep_but_not_features}
+    rename_fighter2_dict = {x:f"fighter2_{x}" for x in keep_attributes}
     fighter2.rename(rename_fighter2_dict, axis=1, inplace=True)
 
     df = (
@@ -83,12 +80,7 @@ def prep_data_for_modelling(cleaned_events, cleaned_fighters):
         )
     )
 
-    ### Additional feature engineering
-    df["fighter1_age"] = df["event_date"].dt.year - df["fighter1_dob"].dt.year
-    df["fighter2_age"] = df["event_date"].dt.year - df["fighter2_dob"].dt.year
-
-    additional_features = ["age"]
-
+    # Subset columns
     df = df[
             [
                 # index
@@ -102,10 +94,10 @@ def prep_data_for_modelling(cleaned_events, cleaned_fighters):
                 # features
                 "weight_class",
             ] +
-            [f"fighter1_"+x for x in features+additional_features] +
-            [f"fighter2_"+x for x in features+additional_features]
+            [f"fighter1_"+x for x in keep_attributes] +
+            [f"fighter2_"+x for x in keep_attributes]
         ]
-    
+
     # Drop rows with missing values
     # Checked these are expected - so happy to drop all
     print("Checking for missing values and dropping...")
@@ -114,6 +106,8 @@ def prep_data_for_modelling(cleaned_events, cleaned_fighters):
     df = df.dropna(axis=0)
 
     return df
+
+
 
 
 
