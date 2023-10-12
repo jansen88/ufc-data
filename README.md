@@ -18,6 +18,7 @@ python -m ufc.scraper
 ```
 python -m ufc.preprocessing
 ```
+- For summary of results of analyses from EDA and ML experiments, please see DOCUMENTATION.md
 
 🚧 TODO 🚧:
 - Pre-processing/cleaning scraped data
