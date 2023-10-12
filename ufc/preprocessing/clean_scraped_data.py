@@ -100,7 +100,7 @@ def clean_fighters(raw_fighters) -> pd.DataFrame:
         .transform(lambda x: float(x)) \
         .pipe(_convert_weight_imperial_to_metric)
     
-    cleaned_fighters["curr_height"] = cleaned_fighters["Height"] \
+    cleaned_fighters["height"] = cleaned_fighters["Height"] \
         .transform(lambda x: str(x)) \
         .apply(lambda x: _convert_height_imperial_to_metric(x))
     
@@ -116,7 +116,7 @@ def clean_fighters(raw_fighters) -> pd.DataFrame:
     # convert percentages
     cleaned_fighters[["Str.Acc.", "Str.Def", "TDDef.", "TDAcc."]] = \
         cleaned_fighters[["Str.Acc.", "Str.Def", "TDDef.", "TDAcc."]]\
-            .map(lambda x: pd.to_numeric(x.rstrip('%'))/100)
+            .applymap(lambda x: pd.to_numeric(x.rstrip('%'))/100)
     
     # subset and rename
     rename_cols = {
@@ -124,7 +124,7 @@ def clean_fighters(raw_fighters) -> pd.DataFrame:
         "curr_wins": "curr_wins",
         "curr_losses": "curr_losses",
         "curr_weight": "curr_weight",
-        "curr_height": "curr_height",
+        "height": "height",
         "reach": "reach",
         "STANCE": "stance",
         "dob": "dob",

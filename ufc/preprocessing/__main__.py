@@ -1,6 +1,6 @@
 from ufc import load_data, constants
 from ufc.preprocessing import clean_scraped_data as clean_data
-from ufc.preprocessing import prep_data
+from ufc.preprocessing import prep_data, feature_eng
 
 if __name__ == "__main__":
 
@@ -13,4 +13,7 @@ if __name__ == "__main__":
     cleaned_events.to_csv("./data/cleaned_fighters.csv", index=False)
     
     prepped_data = prep_data.prep_data_for_modelling(cleaned_events, cleaned_fighters)
-    prepped_data.to_csv("./data/prepped_data_for_modelling.csv", index=False)
+    
+    final_df = feature_eng.derive_features(prepped_data)
+
+    final_df.to_csv("./data/prepped_ufc_data.csv", index=False)
