@@ -3,25 +3,43 @@
 ## About
 🥊 Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
 
+
 ## Setup
+Dependency management
 ```
 pip install -r requirements.txt
+```
+Run web scraper
+```
+python -m ufc.scraper
+```
+Run pre-processing, data cleaning, feature engineering on scraped data
+```
+python -m ufc.preprocessing
 ```
 
 ## Features
 ✅ COMPLETED ✅:
-- Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data.\
-```
-python -m ufc.scraper
-```
-- Pre-processing to prep scraped data for modelling - see /data/prepped_data_for_modelling.csv
-```
-python -m ufc.preprocessing
-```
-- For summary of results of analyses from EDA and ML experiments, please see DOCUMENTATION.md
+- Web-scraping
+  - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data
+- Data cleaning, feature extraction, feature engineering
+  - Pre-processing to clean data, reformat/restructure and perform feature engineering (for immediately extractable features) complete
 
 🚧 TODO 🚧:
-- Pre-processing/cleaning scraped data
-- EDA / visualisations on cleaned data
+- Additional feature engineering
+  - Low hanging fruit done - more complex features in backlog
+- EDA / visualisations
 - Build predictive model
-- Visualisation layer on top - potentially a Dash app
+    - Feature selection
+    - Model selection
+- Evaluate model performance
+  - Also evaluate vs betting odds, weighting errors by odds to assess viability of betting strategy
+- Inference + visualisation layer on top
+
+
+## Detailed log of analyses
+
+| Analysis | Finding | Notebook |
+| --- | --- | --- |
+| Univariate analysis relating key attributes to match outcomes | 1. Confirmed that expected attributes relate to higher incidence of winning - e.g. taller <br />fighter wins more often, longer reach wins more often. <br /> 2. Also confirmed delta of attributes more appropriate than ratio | notebooks\EDA\20231012 Attributes vs match outcome.ipynb |
+| Initial GBM testing / feature selection | 1. xgboost classifier on fighter attributes (delta features) has accuracy of 64% <br /> 2. Delta features seem to adequately summarise difference between fighter attributes <br /> 3. Highest importance features related to delta of striking stats, and surprisingly also difference in age <br /> 4. Lowest importance features were height, reach, stance and weight class. Takedown accuracy was <br /> surprisingly less important, compared to other features e.g. takedown attempts | notebooks\ml experiments\20231012 Initial GBM test.ipynb |
