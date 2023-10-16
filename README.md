@@ -9,12 +9,12 @@
   - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data
 - Data cleaning, feature extraction, feature engineering
   - Pre-processing to clean data, reformat/restructure, data checks
-  - Initial feature engineering (for immediately extractable features) complete
+  - Feature extraction based on fighter statistics
 
 🚧 TODO 🚧:
 
 - Additional web-scraping: Historic betting odds
-- Additional feature engineering: e.g. fight win streak, odds
+- Additional feature engineering: e.g. fight win streak, odds, granular domain-specific features
 - Build predictive model - Feature selection, model selection
 - Evaluate model performance, particularly on historic betting odds to assess viability of betting strategy
 - Inference + visualisation layer on top
