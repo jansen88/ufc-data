@@ -12,14 +12,11 @@
   - Initial feature engineering (for immediately extractable features) complete
 
 🚧 TODO 🚧:
-- Additional feature engineering
-  - Low hanging fruit done - more complex features in backlog
-- EDA / visualisations
-- Build predictive model
-    - Feature selection
-    - Model selection
-- Evaluate model performance
-  - Also evaluate vs betting odds, weighting errors by odds to assess viability of betting strategy
+
+- Additional web-scraping: Historic betting odds
+- Additional feature engineering: e.g. fight win streak, odds
+- Build predictive model - Feature selection, model selection
+- Evaluate model performance, particularly on historic betting odds to assess viability of betting strategy
 - Inference + visualisation layer on top
 
 ## Setup
