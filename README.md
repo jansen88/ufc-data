@@ -3,21 +3,6 @@
 ## About
 🥊 Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
 
-
-## Setup
-Dependency management
-```
-pip install -r requirements.txt
-```
-Run web scraper
-```
-python -m ufc.scraper
-```
-Run pre-processing, data cleaning, feature engineering on scraped data
-```
-python -m ufc.preprocessing
-```
-
 ## Features
 ✅ COMPLETED ✅:
 - Web-scraping
@@ -36,6 +21,19 @@ python -m ufc.preprocessing
   - Also evaluate vs betting odds, weighting errors by odds to assess viability of betting strategy
 - Inference + visualisation layer on top
 
+## Setup
+Dependency management
+```
+pip install -r requirements.txt
+```
+Run web scraper
+```
+python -m ufc.scraper
+```
+Run pre-processing, data cleaning, feature engineering on scraped data
+```
+python -m ufc.preprocessing
+```
 
 ## Detailed log of analyses
 
