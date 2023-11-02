@@ -27,7 +27,10 @@
 - Inference + visualisation layer on top
 
 ## Setup
-Dependency management
+Dependency management - poetry or pip
+```
+poetry install
+```
 ```
 pip install -r requirements.txt
 ```

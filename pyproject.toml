@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ufc-match-predictor"
+version = "0.1.0"
+description = ""
+authors = ["Jansen Zhang <94953297+jansen-zhang20@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+beautifulsoup4 = "^4.12.2"
+pandas = "^1.5.3"
+numpy = "^1.24.3"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
