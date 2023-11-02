@@ -13,9 +13,16 @@
 
 🚧 TODO 🚧:
 
-- Additional web-scraping: Historic betting odds
-- Additional feature engineering: e.g. fight win streak, odds, granular domain-specific features
-- Build predictive model - Feature selection, model selection
+- Additional web-scraping: Historic betting odds - unlocks additional information/signal for model, also allows us to test viability of betting strategy and if model is better than just choosing favourite
+- Model iteration
+  - Additional feature engineering
+    - Fight win streak, finish rate (knockouts, submissions)
+    - Derived features - durability, tag as wrester/striker/grappler etc.
+    - Include if fighter is favourite (if have scraped odds)
+  - Review training data
+    - Check if predicting on fighters with insufficient data - if filtering to only fighters with > X fights produces better results
+    - Check if trends change over time - does model perform better on more recent data, is including more historic data useful
+- Finalise feature selection, model selection
 - Evaluate model performance, particularly on historic betting odds to assess viability of betting strategy
 - Inference + visualisation layer on top
 
