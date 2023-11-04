@@ -6,15 +6,20 @@
 ## Features
 ✅ COMPLETED ✅:
 - Web-scraping
-  - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under /data
+  - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under ./data
 - Data cleaning, feature extraction, feature engineering
   - Pre-processing to clean data, reformat/restructure, data checks
-  - Feature extraction based on fighter statistics
+  - Feature extraction and engineering, with key features derived from delta of fighter stats (e.g. delta of age, delta of average sig. strikes landed PM)
+- Initial model iteration
+  - GBM / logistic regression see accuracy of ~65%. This initial result is promising, suggesting that a machine learning model based on fighter attributes may perform at least comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
 
 🚧 TODO 🚧:
 - Data extraction pipeline
   - Update allow for efficient refreshes - fetch only new events, but update all fighter stats
-- Additional web-scraping: Historic betting odds - unlocks additional information/signal for model, also allows us to test viability of betting strategy and if model is better than just choosing favourite
+- Additional web-scraping: Historic betting odds
+  - May provide additional signal/information (capture information from market sentiment)
+  - Allows us to test viability of betting strategy - if model would outperform choosing favourite
+  - Reconstruct modelling approach - instead of predicting if fighter1 or fighter2 win (randomly assigned), predict likelihood of underdog beating favourite
 - Model iteration
   - Additional feature engineering
     - Fight win streak, finish rate (knockouts, submissions)
