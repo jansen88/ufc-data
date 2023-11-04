@@ -64,7 +64,7 @@ class FighterScraper():
         self.fighter_stats_df = fighter_stats_df
 
     def write_data(self):
-        self.fighter_stats_df.to_csv("./data/fighter_stats.csv", index=False)
+        self.fighter_stats_df.to_csv("./data/fighters_raw.csv", index=False)
 
 
     ### Helper methods

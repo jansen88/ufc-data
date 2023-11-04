@@ -12,7 +12,8 @@
   - Feature extraction based on fighter statistics
 
 🚧 TODO 🚧:
-
+- Data extraction pipeline
+  - Update allow for efficient refreshes - fetch only new events, but update all fighter stats
 - Additional web-scraping: Historic betting odds - unlocks additional information/signal for model, also allows us to test viability of betting strategy and if model is better than just choosing favourite
 - Model iteration
   - Additional feature engineering

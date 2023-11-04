@@ -16,4 +16,4 @@ if __name__ == "__main__":
     
     final_df = feature_eng.derive_features(prepped_data)
 
-    final_df.to_csv("./data/prepped_ufc_data.csv", index=False)
+    final_df.to_csv("./data/all_data_final.csv", index=False)
