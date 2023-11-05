@@ -11,7 +11,8 @@
   - Feature extraction and engineering, with key features derived from delta of fighter stats (e.g. `delta_age`, `delta_sig_strikes_landed_pm`, `delta_submission_avg_attempted_per15m`)
 - Exploratory data analysis - see `/notebooks/eda`
   - Analysis of relationship of delta of fighter attributes vs match outcome
-![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb)
+    ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/2af1b032-a0e9-4c22-b32f-7748d8cd9ffc)
+
 - Initial model PoC - see `/notebooks/ml-experiments` and [Detailed log of analyses](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
   - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
 
