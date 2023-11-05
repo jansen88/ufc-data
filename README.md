@@ -14,7 +14,7 @@
     ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/2af1b032-a0e9-4c22-b32f-7748d8cd9ffc)
 
 - Initial model PoC - see `/notebooks/ml-experiments` and [Detailed log of analyses](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
-  - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
+  - GBM / logistic regression see **accuracy of >65%**. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
 
 ## Feature backlog 🚧
 - Data extraction pipeline
@@ -60,5 +60,5 @@ python -m ufc.preprocessing
 | EDA | Univariate analysis relating key attributes to match outcomes | * Confirmed expected relationships between fighter attributes and match outcome . <br /> Age and average sig. strikes landed previously seem to have the strongest relationships to likelihood of winning; younger fighter wins 61% of time, fighter landing more sig. strikes historically wins 59% of time <br /> * Confirmed delta of attributes has stronger relationship to match outcome than ratio | notebooks\EDA\20231012 Attributes vs match outcome.ipynb |
 | | Data checks | * Data values / representation sensible <br /> * No intercorrelation - highest correlation sees values of ~0.2, for attributes with strongest linear relationship to outcome. | notebooks\EDA\20231016 Data checks.ipynb |
 | Feature selection | Initial GBM testing / feature selection | * Delta (of fighter1 and fighter2) features capture as much signal as individual features  <br /> * Highest importance features related to delta of striking stats, and surprisingly also difference in age <br /> * Lowest importance features were height, reach, stance and weight class. Takedown accuracy was <br /> surprisingly less important, compared to other features e.g. takedown attempts | notebooks\ml experiments\20231012 Initial GBM test.ipynb |
-| Model selection | Initial GBM testing / feature selection | * Initial tests saw accuracy of 64-65% <br /> * Variation in accuracy depending on hyperparameter selection,  different parameters across folds - may need tuning| notebooks\ml experiments\20231012 Initial GBM test.ipynb |
+| Model selection | Initial GBM testing / feature selection | * Initial tests saw accuracy of ~65% (nested CV) <br /> * Variation in accuracy depending on hyperparameter selection,  different parameters across folds - may need tuning| notebooks\ml experiments\20231012 Initial GBM test.ipynb |
 |  | Initial logistic regression testing |* Initial tests saw accuracy of 65%| notebooks\ml experiments\20231016 Logistic regression test.ipynb |
