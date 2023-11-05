@@ -3,7 +3,21 @@
 ## About
 🥊 Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
 
-## Features/results completed ✅
+## Setup
+Dependency management - Poetry (more frequently updated) or pip (`requirements.txt` exists but less frequently updated)
+```
+poetry install
+```
+To run web scraper:
+```
+python -m ufc.scraper
+```
+To run pre-processing, data cleaning, feature engineering on scraped data:
+```
+python -m ufc.preprocessing
+```
+
+## Features completed ✅
 - Web-scraping - see `/ufc/scraper`
   - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under `/data`
 - Data cleaning, feature extraction, feature engineering - see `/ufc/preprocessing`
@@ -35,22 +49,7 @@
 - Inference for future matches
 - Visualisation layer on top
 
-## Setup
-Dependency management - poetry or pip
-```
-poetry install
-```
-```
-pip install -r requirements.txt
-```
-Run web scraper
-```
-python -m ufc.scraper
-```
-Run pre-processing, data cleaning, feature engineering on scraped data
-```
-python -m ufc.preprocessing
-```
+
 
 ## Detailed log of analyses
 
