@@ -10,8 +10,8 @@
 - Data cleaning, feature extraction, feature engineering
   - Pre-processing to clean data, reformat/restructure, data checks
   - Feature extraction and engineering, with key features derived from delta of fighter stats (e.g. delta of age, delta of average sig. strikes landed PM)
-- Initial model iteration
-  - GBM / logistic regression see accuracy of ~65%. This initial result is promising, suggesting that a machine learning model based on fighter attributes may perform at least comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
+- Initial model PoC
+  - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
 
 🚧 TODO 🚧:
 - Data extraction pipeline
@@ -30,7 +30,8 @@
     - Check if trends change over time - does model perform better on more recent data, is including more historic data useful
 - Finalise feature selection, model selection
 - Evaluate model performance, particularly on historic betting odds to assess viability of betting strategy
-- Inference + visualisation layer on top
+- Inference for future matches
+- Visualisation layer on top
 
 ## Setup
 Dependency management - poetry or pip
