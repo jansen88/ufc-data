@@ -1,9 +1,9 @@
 # ufc-predictor
 
-## About
+## ℹ️ About 
 🥊 Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
 
-## Setup
+## 🔧 Setup 
 Dependency management - Poetry (more frequently updated) or pip (`requirements.txt` exists but less frequently updated)
 ```
 poetry install
@@ -17,7 +17,7 @@ To run pre-processing, data cleaning, feature engineering on scraped data:
 python -m ufc.preprocessing
 ```
 
-## Features completed ✅
+## ✅ Features completed 
 - Web-scraping - see `/ufc/scraper`
   - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under `/data`
 - Data cleaning, feature extraction, feature engineering - see `/ufc/preprocessing`
@@ -28,7 +28,7 @@ python -m ufc.preprocessing
   - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
   - See [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below for feature importance and SHAP values
 
-## Feature backlog 🚧
+## 🚧 Feature backlog 
 - Data extraction pipeline
   - Update allow for efficient refreshes - fetch only new events, but update all fighter stats
 - Additional web-scraping: Historic betting odds
@@ -50,8 +50,7 @@ python -m ufc.preprocessing
 - Visualisation layer on top
 
 
-
-## Detailed log of analyses
+## 📒 Detailed log of analyses 
 
 | Process | Analysis | Finding | Notebook |
 | --- | --- | --- | --- |
