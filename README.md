@@ -9,13 +9,18 @@
 - Data cleaning, feature extraction, feature engineering - see `/ufc/preprocessing`
   - Pre-processing to clean data, reformat/restructure, data checks
   - Feature extraction and engineering, with key features derived from delta of fighter stats (e.g. `delta_age`, `delta_sig_strikes_landed_pm`, `delta_submission_avg_attempted_per15m`)
+<<<<<<< HEAD
 - Exploratory data analysis - see `/notebooks/eda`
   - Analysis of relationship of delta of fighter attributes vs match outcome
     ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/2af1b032-a0e9-4c22-b32f-7748d8cd9ffc)
 
 - Initial model PoC - see `/notebooks/ml-experiments` and [Detailed log of analyses](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
+=======
+- Exploratory data analysis - see `/notebooks/eda` and [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
+- Initial model PoC - see `/notebooks/ml-experiments` and [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
+>>>>>>> 39584cfa5b66f2d759906cdc1e1fae48a6cc1aa3
   - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
-  - See [Detailed log of analyses](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below for feature importance and SHAP values
+  - See [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below for feature importance and SHAP values
 
 ## Feature backlog 🚧
 - Data extraction pipeline
