@@ -28,6 +28,7 @@
     - Fight win streak, finish rate (knockouts, submissions)
     - Derived features - durability, tag as wrester/striker/grappler etc.
     - Include if fighter is favourite (if have scraped odds)
+    - If fighter has moved up/down weight class, short-notice replacement, weighed in over limit - need data source for this
   - Review training data
     - Check if predicting on fighters with insufficient data - if filtering to only fighters with > X fights produces better results
     - Check if trends change over time - does model perform better on more recent data, is including more historic data useful
