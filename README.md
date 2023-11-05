@@ -9,12 +9,10 @@
 - Data cleaning, feature extraction, feature engineering - see `/ufc/preprocessing`
   - Pre-processing to clean data, reformat/restructure, data checks
   - Feature extraction and engineering, with key features derived from delta of fighter stats (e.g. `delta_age`, `delta_sig_strikes_landed_pm`, `delta_submission_avg_attempted_per15m`)
-- Exploratory data analysis - see `/notebooks/eda`
-  - Analysis of relationship of delta of fighter attributes vs match outcome
-![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb)
-- Initial model PoC - see `/notebooks/ml-experiments` and [Detailed log of analyses](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
+- Exploratory data analysis - see `/notebooks/eda` and [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
+- Initial model PoC - see `/notebooks/ml-experiments` and [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below
   - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
-  - See [Detailed log of analyses](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below for feature importance and SHAP values
+  - See [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below for feature importance and SHAP values
 
 ## Feature backlog 🚧
 - Data extraction pipeline
@@ -57,7 +55,7 @@ python -m ufc.preprocessing
 
 | Process | Analysis | Finding | Notebook |
 | --- | --- | --- | --- |
-| EDA | Univariate analysis relating key attributes to match outcomes | • Confirmed expected relationships between fighter attributes and match outcome . <br /> Age and average sig. strikes landed previously seem to have the strongest relationships to likelihood of winning; younger fighter wins 61% of time, fighter landing more sig. strikes historically wins 59% of time <br /> • Confirmed delta of attributes has stronger relationship to match outcome than ratio | notebooks\EDA\20231012 Attributes vs match outcome.ipynb |
+| EDA | Univariate analysis relating key attributes to match outcomes | • Confirmed expected relationships between fighter attributes and match outcome. <br /> Age and average sig. strikes landed previously seem to have the strongest relationships to match win rate<br /> ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb) <br /> • Confirmed delta of attributes has stronger relationship to match outcome than ratio | notebooks\EDA\20231012 Attributes vs match outcome.ipynb |
 | | Data checks | • Data values / representation sensible <br /> • No intercorrelation - highest correlation sees values of ~0.2, for attributes with strongest linear relationship to outcome. | notebooks\EDA\20231016 Data checks.ipynb |
 | Feature selection | Initial GBM testing / feature selection | • Delta (of fighter1 and fighter2) features capture as much signal as individual features  <br /> • Highest importance features related to delta of striking stats, and surprisingly also difference in age <br /> • Lowest importance features were height, reach, stance and weight class. Takedown accuracy was surprisingly less important, compared to other features e.g. takedown attempts  <br /> • Feature importance (all delta features) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/8090e1db-e46e-4714-bced-4a93da2293ae) <br /> • SHAP values (after removing less important delta features by RFECV) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/05ee895e-3bf1-4f61-97e9-8f85e7974db4) | notebooks\ml experiments\20231012 Initial GBM test.ipynb |
 | Model selection | Initial GBM testing / feature selection | • Initial tests saw accuracy of 64-65% <br /> • Variation in accuracy depending on hyperparameter selection,  different parameters across folds - may need tuning | notebooks\ml experiments\20231012 Initial GBM test.ipynb |
