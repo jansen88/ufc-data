@@ -8,7 +8,7 @@ Dependency management - Poetry (more frequently updated) or pip (`requirements.t
 ```
 poetry install
 ```
-To run web scraper:
+To run web scraper and update match results/fighter stats:
 ```
 python -m ufc.scraper
 ```
