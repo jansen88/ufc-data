@@ -17,6 +17,7 @@ def clean_events(raw_events) -> pd.DataFrame:
     
     # Subset columns
     cleaned_events = cleaned_events[[
+        "event_name",
         "event_date",
         "Weight class",
         "fighter1",
@@ -146,3 +147,52 @@ def clean_fighters(raw_fighters) -> pd.DataFrame:
 
     return cleaned_fighters
 
+
+def clean_odds(raw_odds) -> pd.DataFrame:
+
+    odds_df = raw_odds.copy()
+
+    # # Drop inf rows
+    # odds_df = odds_df[
+    #     ~(
+    #         (odds_df["fighter1_odds"] == np.inf) | (odds_df["fighter2_odds"] == np.inf)
+    #     )
+    # ]
+
+    # # Drop draws and no contests
+    # odds_df = odds_df[odds_df["result"] != "-"]
+
+    # Recode to favourite vs underdog
+    # Where equal odds - we will consider fighter1 as the favourite (minority of cases so fine to include for modelling)
+    odds_df["favourite"] = np.where(
+        odds_df["fighter1_odds"] <= odds_df["fighter2_odds"], odds_df["fighter1"], odds_df["fighter2"]
+    )
+    odds_df["underdog"] = np.where(
+        odds_df["fighter1_odds"] > odds_df["fighter2_odds"], odds_df["fighter1"], odds_df["fighter2"]
+    )
+    odds_df["outcome"] = np.select(
+        [
+            odds_df["result"] == odds_df["favourite"],
+            odds_df["result"] == odds_df["underdog"]
+        ],
+        [
+            "favourite",
+            "underdog"
+        ]
+        , default = np.nan
+    )
+
+    odds_df["favourite_odds"] = np.where(
+        odds_df["fighter1_odds"] <= odds_df["fighter2_odds"], odds_df["fighter1_odds"], odds_df["fighter2_odds"]
+    )
+    odds_df["underdog_odds"] = np.where(
+        odds_df["fighter1_odds"] > odds_df["fighter2_odds"], odds_df["fighter1_odds"], odds_df["fighter2_odds"]
+    )
+
+    odds_df = odds_df[
+        [
+            "event", "favourite", "underdog", "favourite_odds", "underdog_odds", "outcome"
+        ]
+    ]
+
+    return odds_df

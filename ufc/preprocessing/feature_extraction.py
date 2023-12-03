@@ -1,6 +1,9 @@
 """
-Data prep steps before modelling - return features available from data without additional calculation steps
+Feature extraction steps
+- Combine (clean) scraped data to extract features
+- Extract features available from data without additional calculation steps
 
+In more detail:
 - Take clean fighters and events data
 - Because we are predicting response outcome = "fighter1" or "fighter2",
 need to randomly shuffle fighter1 and fighter 2 data from events results -
@@ -14,8 +17,32 @@ renamed as fighter1_*, fighter2_*
 
 import pandas as pd
 import numpy as np
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 from ufc import constants
+
+# def extract_features(cleaned_odds, cleaned_fighters) -> pd.DataFrame():
+
+    # # Drop inf rows
+    # odds_df = odds_df[
+    #     ~(
+    #         (odds_df["fighter1_odds"] == np.inf) | (odds_df["fighter2_odds"] == np.inf)
+    #     )
+    # ]
+
+    # # Drop draws and no contests
+    # odds_df = odds_df[odds_df["result"] != "-"]
+
+
+# cleaned_events: take weight_class, outcome is more complete for draw and N/C
+# cleaned_odds: take favourite, underdog, and odds
+#   join to cleaned_events on event_name and winner of fight
+# cleaned_fighters: take all fighter attributes
+
+# events_labels = pd.DataFrame(cleaned_events["event_name"].unique(), columns=["events"])
+# odds_labels = pd.DataFrame(cleaned_odds["event"].unique(), columns=["odds"])
+
 
 
 def prep_data_for_modelling(cleaned_events, cleaned_fighters) -> pd.DataFrame:
