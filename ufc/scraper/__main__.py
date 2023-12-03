@@ -36,6 +36,8 @@ if __name__ == "__main__":
 
     args = arg_parser()
 
+    # TODO - update logic below so that events and odds scrape only latest rather than needing to update all
+
     ######## Scrape individual UFC fighter data ########
 
     if args.fighters:

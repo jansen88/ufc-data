@@ -1,17 +1,15 @@
 """
 Scrape historic UFC odds from betmma.tips
 
-The work below draws upon another data scientist's work here in identifying an appropriate site to scrape
-odds from as well as some logic to scrape required elements.
+The work below draws lightly upon another data scientist's work here in identifying an appropriate site to 
+scrape odds from as well as some logic to scrape required elements.
     https://github.com/jasonchanhku/web_scraping/blob/master/MMA%20Project/favourite_vs_underdogs.R
 
-This required significant effort of my own to rewrite in Python (instead of R) and also convert to 
-appropriate pipeline-ready code, as well as significant updates to logic which was no longer working correctly 
-for latest event pages - i.e., updating the logic to correctly fetch fighter1, fighter2 and result.
+This required significant additional effort of my own to rewrite in Python (instead of R), scrape from a 
+different page (above work scrapes from a page missing some events), write appropriate pipeline-ready code, 
+as well as significant updates to logic which was no longer working correctly  for latest event pages 
+- e.g., updating the logic to correctly fetch fighter1, fighter2 and result, improve logic to run faster
 
-Known issues:
-    - Takes loooong time to run for newer pages, which record how punters from the site performed in
-        addition to the match results we care about
 """
 
 import pandas as pd
@@ -26,7 +24,7 @@ class OddsScraper():
     """Scrape historic odds from betmma.tips"""
     def __init__(self, test=False):
         self.test = test
-        self.all_url = "http://www.betmma.tips/mma_betting_favorites_vs_underdogs.php?Org=1"
+        self.all_url = "https://www.betmma.tips/past_mma_handicapper_performance_all.php?Org=1"
         self.event_links = None
         self.event_odds = None
         self.curr_time = datetime.datetime.now()
@@ -36,7 +34,8 @@ class OddsScraper():
         response = requests.get(self.all_url)
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        links = [f"http://www.betmma.tips/{a['href']}" for a in soup.select("td td td td a")]
+        links = [f"http://www.betmma.tips/{a['href']}" for a in soup.select("td td td td a") \
+                    if "UFC" in a.get_text()]
 
         self.event_links = links
 
@@ -69,6 +68,7 @@ class OddsScraper():
         sub_soup = BeautifulSoup(sub_response.text, 'html.parser')
 
         event = []
+        links = []
         fighter1 = []
         fighter2 = []
         fighter1_odds = []
@@ -115,11 +115,19 @@ class OddsScraper():
         # Event
         event_t = sub_soup.select("td h1")[0].get_text()
         event.extend([event_t] * len(fighter1))
+        links.extend([link] * len(fighter1))
 
         # Label
-        # Known issue - for later pages, this takes a loooong time (10mins+)
-        # as many tags to search through
-        label_t = [td.get_text() for td in sub_soup.select("td td td td tr~ tr+ tr td")]
+        # Exact match is sub_soup.select("td td td td tr~ tr+ tr td") but this
+        # is very slow especially on large pages
+        # This is less precise but works on pages I tested
+        label_t = [
+                    td.get_text() for td in sub_soup.select("td tr+ tr td") \
+                    if (len(td.get_text()) <= 7) and \
+                        "@" in td.get_text()
+                ]
+
+
         label_cleansed = [t.replace("@", "").strip() for t in label_t]
 
         # Fighter1 odds
@@ -131,6 +139,7 @@ class OddsScraper():
         fighter2_odds.extend(fighter2_odds_t)
 
         return pd.DataFrame({
+            "link": links,
             "event": event,
             "fighter1": fighter1,
             "fighter2": fighter2,
