@@ -6,5 +6,8 @@ def read_scraped_events():
 def read_scraped_fighters():
     return pd.read_csv("./data/fighters_raw.csv")
 
+def read_scraped_odds():
+    return pd.read_csv("./data/odds_raw.csv")
+
 def read_prepped_data():
     return pd.read_csv("./data/all_data_final.csv")
