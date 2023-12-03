@@ -1,9 +1,23 @@
 # ufc-predictor
 
-## About
+## ℹ️ About 
 🥊 Repo to scrape historic UFC fighter stats/match results, and build a predictive model to predict the winner of future/hypothetical matches based on historic fighter stats
 
-## Features/results completed ✅
+## 🔧 Setup 
+Dependency management - Poetry (more frequently updated) or pip (`requirements.txt` exists but less frequently updated)
+```
+poetry install
+```
+To run web scraper and update match results/fighter stats:
+```
+python -m ufc.scraper
+```
+To run pre-processing, data cleaning, feature engineering on scraped data:
+```
+python -m ufc.preprocessing
+```
+
+## ✅ Features completed 
 - Web-scraping - see `/ufc/scraper`
   - Scrape UFC data - fighter stats, and match results. Scraped data as at 2023-09-20 is available under `/data`
 - Data cleaning, feature extraction, feature engineering - see `/ufc/preprocessing`
@@ -14,7 +28,7 @@
   - GBM / logistic regression see accuracy of ~65%. This initial result suggests that a machine learning model based on fighter attributes may perform comparably to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)).
   - See [analyses log](https://github.com/jansen88/ufc-match-predictor/tree/master#detailed-log-of-analyses) below for feature importance and SHAP values
 
-## Feature backlog 🚧
+## 🚧 Feature backlog 
 - Data extraction pipeline
   - Update allow for efficient refreshes - fetch only new events, but update all fighter stats
 - Additional web-scraping: Historic betting odds
@@ -35,28 +49,13 @@
 - Inference for future matches
 - Visualisation layer on top
 
-## Setup
-Dependency management - poetry or pip
-```
-poetry install
-```
-```
-pip install -r requirements.txt
-```
-Run web scraper
-```
-python -m ufc.scraper
-```
-Run pre-processing, data cleaning, feature engineering on scraped data
-```
-python -m ufc.preprocessing
-```
 
-## Detailed log of analyses
+## 📒 Detailed log of analyses 
 
 | Process | Analysis | Finding | Notebook |
 | --- | --- | --- | --- |
-| EDA | Univariate analysis relating key attributes to match outcomes | • Confirmed expected relationships between fighter attributes and match outcome. <br /> Age and average sig. strikes landed previously seem to have the strongest relationships to match win rate<br /> ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb) <br /> • Confirmed delta of attributes has stronger relationship to match outcome than ratio | notebooks\EDA\20231012 Attributes vs match outcome.ipynb |
-| | Data checks | • Data values / representation sensible <br /> • No intercorrelation - highest correlation sees values of ~0.2, for attributes with strongest linear relationship to outcome. | notebooks\EDA\20231016 Data checks.ipynb |
-| Feature selection | Initial GBM testing / feature selection | • Delta (of fighter1 and fighter2) features capture as much signal as individual features  <br /> • Highest importance features related to delta of striking stats, and surprisingly also difference in age <br /> • Lowest importance features were height, reach, stance and weight class. Takedown accuracy was surprisingly less important, compared to other features e.g. takedown attempts  <br /> • Feature importance (all delta features) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/8090e1db-e46e-4714-bced-4a93da2293ae) <br /> • SHAP values (after removing less important delta features by RFECV) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/ed7a601d-6b58-4d55-9a05-e4f99cd65e84)| notebooks\ml experiments\20231012 Initial GBM test.ipynb |
-| Model selection | Initial GBM testing / feature selection | • Initial tests saw accuracy of 64-65% <br /> • Variation in accuracy depending on hyperparameter selection,  different parameters across folds - may need tuning | notebooks\ml experiments\20231012 Initial GBM test.ipynb |
+| EDA | Univariate analysis relating key attributes to match outcomes | • Confirmed expected relationships between fighter attributes and match outcome. <br /> Age and average sig. strikes landed previously seem to have the strongest relationships to match win rate<br /> ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb) <br /> • Confirmed delta of attributes has stronger relationship to match outcome than ratio | `notebooks\EDA\20231012 Attributes vs match outcome.ipynb` |
+| | Data checks | • Data values / representation sensible <br /> • No intercorrelation - highest correlation sees values of ~0.2, for attributes with strongest linear relationship to outcome. | `notebooks\EDA\20231016 Data checks.ipynb` |
+| Feature selection | Initial GBM testing / feature selection | • Delta (of fighter1 and fighter2) features capture as much signal as individual features  <br /> • Highest importance features related to delta of striking stats, and surprisingly also difference in age <br /> • Lowest importance features were height, reach, stance and weight class. Takedown accuracy was surprisingly less important, compared to other features e.g. takedown attempts  <br /> • Feature importance (all delta features) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/8090e1db-e46e-4714-bced-4a93da2293ae) <br /> • SHAP values (after removing less important delta features by RFECV) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/ed7a601d-6b58-4d55-9a05-e4f99cd65e84)| `notebooks\ml experiments\20231012 Initial GBM test.ipynb` |
+| Model selection | Initial GBM testing / feature selection | • Initial tests saw accuracy of 64-65% <br /> • Variation in accuracy depending on hyperparameter selection,  different parameters across folds - may need tuning | `notebooks\ml experiments\20231012 Initial GBM test.ipynb` |
+| | Initial logistic regression testing |• Initial tests saw accuracy of 65%| `notebooks\ml experiments\20231016 Logistic regression test.ipynb` |
