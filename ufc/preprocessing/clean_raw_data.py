@@ -5,7 +5,7 @@ Cleaning steps:
 - Split fight record W-L-D into separate columns for W, L, D
 - Convert measurements for height/weight/reach from strings in imperial
 units to metric
-- Check for and drop duplicates in fighters
+- Check for and drop fighters with same names
 """
 
 import pandas as pd
@@ -22,12 +22,17 @@ def clean_events(raw_events) -> pd.DataFrame:
         "Weight class",
         "fighter1",
         "fighter2",
-        "outcome"
+        "Method",
+        "Round",
+        "outcome",
+        "timestamp"
     ]]
 
     # Rename columns
     cleaned_events = cleaned_events.rename({
-        "Weight class": "weight_class"
+        "Weight class": "weight_class",
+        "Method": "method",
+        "Round": "round"
     }, axis=1)
 
     # Convert date types
@@ -137,6 +142,7 @@ def clean_fighters(raw_fighters) -> pd.DataFrame:
         "TDAcc.": "takedown_accuracy",
         "TDDef.": "takedown_defence",
         "Sub.Avg.": "submission_avg_attempted_per15m",
+        "timestamp": "timestamp"
     }
     
     cleaned_fighters = cleaned_fighters.rename(rename_cols, axis=1)
@@ -163,7 +169,7 @@ def clean_odds(raw_odds) -> pd.DataFrame:
     # odds_df = odds_df[odds_df["result"] != "-"]
 
     odds_df["date"] = pd.to_datetime(odds_df["date"])
- 
+
     # Recode to favourite vs underdog
     # Where equal odds - we will consider fighter1 as the favourite (minority of cases so fine to include for modelling)
     odds_df["favourite"] = np.where(
@@ -191,10 +197,15 @@ def clean_odds(raw_odds) -> pd.DataFrame:
         odds_df["fighter1_odds"] > odds_df["fighter2_odds"], odds_df["fighter1_odds"], odds_df["fighter2_odds"]
     )
 
-    odds_df = odds_df[
-        [
-            "event", "favourite", "underdog", "favourite_odds", "underdog_odds", "outcome"
-        ]
-    ]
+    odds_df = odds_df[[
+            "date",
+            "event",
+            "favourite",
+            "underdog",
+            "favourite_odds",
+            "underdog_odds",
+            "outcome",
+            "timestamp"
+    ]]
 
     return odds_df
