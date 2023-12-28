@@ -13,6 +13,7 @@ as well as significant updates to logic which was no longer working correctly  f
 """
 
 import pandas as pd
+import numpy as np
 import datetime
 
 import requests
@@ -34,21 +35,41 @@ class OddsScraper():
         response = requests.get(self.all_url)
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        links = [f"http://www.betmma.tips/{a['href']}" for a in soup.select("td td td td a") \
-                    if "UFC" in a.get_text()]
+        links = [
+                    f"http://www.betmma.tips/{a['href']}" for a in soup.select("td td td td a")
+                ]
+        
+        # Also scrape full table to fetch dates as well - we need this
+        # to join back onto UFC events as names don't match
+        table = pd.read_html(response.text)[8] # FIXME - hard coded 8
 
-        self.event_links = links
+        # set first row as col headers
+        table.columns = table.iloc[0]
+        table = table[1:-1]
+        table["url"] = links
+        table = table[["Date", "Event", "url"]]
+
+        # filter to UFC events only
+        table = table[
+            table.Event.str.contains("UFC") &
+            ~table.Event.str.contains("Road to UFC")
+        ].reset_index()
+
+        self.event_links = table
 
     def scrape_all_event_odds(self):
         """Iterate over all individual urls to scrape odds"""
 
         scraped_results = []
 
-        for i, event_url in enumerate(self.event_links):
+        table = self.event_links
 
-            print(f"{i+1}/{len(self.event_links)} - {event_url}")
+        for i, row in table.iterrows():
+            print(f"{i+1}/{len(table)} - {row.Date} - {row.url}")
 
-            results = self._scrape_event_odds_page(event_url)
+            results = self._scrape_event_odds_page(row.url)
+            results["link"] = row.url
+            results["date"] = row.Date
             scraped_results.append(results)
 
             utils.sleep_randomly()
@@ -68,7 +89,6 @@ class OddsScraper():
         sub_soup = BeautifulSoup(sub_response.text, 'html.parser')
 
         event = []
-        links = []
         fighter1 = []
         fighter2 = []
         fighter1_odds = []
@@ -115,7 +135,6 @@ class OddsScraper():
         # Event
         event_t = sub_soup.select("td h1")[0].get_text()
         event.extend([event_t] * len(fighter1))
-        links.extend([link] * len(fighter1))
 
         # Label
         # Exact match is sub_soup.select("td td td td tr~ tr+ tr td") but this
@@ -139,7 +158,8 @@ class OddsScraper():
         fighter2_odds.extend(fighter2_odds_t)
 
         return pd.DataFrame({
-            "link": links,
+            "link": np.nan,
+            "date": np.nan,
             "event": event,
             "fighter1": fighter1,
             "fighter2": fighter2,
