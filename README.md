@@ -82,7 +82,7 @@ Some interesting insights and visualisations are shared here:
   ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/9ec6cc29-bcb2-4164-b076-c6a7b2049059)
 
 ## 🔮 Predictive model
-🚧 Development of a machine learning model to test how well a model can predict UFC match outcome is WiP
+🚧 Development of ML model to test how well match outcome can be predicted based on fighter stats is WiP:
 * Initial PoCs (GBM, logistic regression) attempting to predict match outcome from fighter attributes (had not yet scraped betting odds) saw accuracy of ~65%
 * This is comparable to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)), which suggests that betting market sentiment may capture most information the model is currently trained on.
 * Significant opportunity still to iterate with further testing of features:
