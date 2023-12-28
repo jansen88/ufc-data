@@ -162,6 +162,8 @@ def clean_odds(raw_odds) -> pd.DataFrame:
     # # Drop draws and no contests
     # odds_df = odds_df[odds_df["result"] != "-"]
 
+    odds_df["date"] = pd.to_datetime(odds_df["date"])
+ 
     # Recode to favourite vs underdog
     # Where equal odds - we will consider fighter1 as the favourite (minority of cases so fine to include for modelling)
     odds_df["favourite"] = np.where(
