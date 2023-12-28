@@ -3,12 +3,12 @@
 
 
 ## 📖 Contents
-* [ℹ️ About ](https://github.com/jansen88/parkrun-results/tree/master#about)
+* [ℹ️ About ](https://github.com/jansen88/ufc-data?tab=readme-ov-file#%E2%84%B9%EF%B8%8F-about)
 * [🔧 Setup](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-setup)
 * [📁 Datasets](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-datasets)
-* [⚒️ Data extraction](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-data-extraction)
+* [⚒️ Data extraction](https://github.com/jansen88/ufc-data?tab=readme-ov-file#%EF%B8%8F-data-extraction))
 * [📊 EDA / Data viz](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-eda--data-viz)
-* [🔮 Predictive model](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-predicting-match-outcome)
+* [🔮 Predictive model](https://github.com/jansen88/ufc-data?tab=readme-ov-file#-predictive-model)
 
 ## ℹ️ About 
 The UFC (Ultimate Fighting Championship) is a global mixed martial arts (MMA) organization, hosting weekly competitive events that showcase fighters from a range of weight classes and backgrounds. 
