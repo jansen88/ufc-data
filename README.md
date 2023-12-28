@@ -3,7 +3,12 @@
 
 
 ## 📖 Contents
-TODO
+* [ℹ️ About ](* [About](https://github.com/jansen88/parkrun-results/tree/master#about)
+* [📁 Datasets](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-datasets)
+* [⚒️ Data extraction](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-data-extraction)
+* [📊 EDA / Data viz](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-eda--data-viz)
+* [🔮 Predicting match outcome]()
+* [🔧 Setup](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-setup)
 
 ## ℹ️ About 
 The UFC (Ultimate Fighting Championship) is a global mixed martial arts (MMA) organization, hosting weekly competitive events that showcase fighters from a range of weight classes and backgrounds. 
@@ -40,7 +45,7 @@ The purpose of compiling these datasets is for personal interest for data analys
 
 The raw datasets (scraped from the official [UFC](ufcstats.com) website and [betmma.tips](betmma.tips]) are also available under `/data/`.
 
-## 💾 Data engineering
+## ⚒️ Data extraction
 
 🏃 Code:
 * To run web scraper and update match results/fighter stats/betting odds:
@@ -70,7 +75,7 @@ Some interesting insights and visualisations are shared here:
 * Historic likelihood of the betting favourite winning increases from a little over 50%, to over 75% as the difference in decimal odds exceeds 2.0.  <br />
   ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/9ec6cc29-bcb2-4164-b076-c6a7b2049059)
 
-## Predictive model for match outcome
+## 🔮 Predicting match outcome
 🚧 Development of a machine learning model to test how well a model can predict UFC match outcome is WiP
 * Initial PoCs (GBM, logistic regression) attempting to predict match outcome from fighter attributes (had not yet scraped betting odds) saw accuracy of ~65%.
 * This is comparable to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)), which suggests that betting market sentiment may capture most information the model is currently trained on.
