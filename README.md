@@ -3,12 +3,12 @@
 
 
 ## 📖 Contents
-* [ℹ️ About ](* [About](https://github.com/jansen88/parkrun-results/tree/master#about)
+* [ℹ️ About ](https://github.com/jansen88/parkrun-results/tree/master#about)
+* [🔧 Setup](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-setup)
 * [📁 Datasets](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-datasets)
 * [⚒️ Data extraction](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-data-extraction)
 * [📊 EDA / Data viz](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-eda--data-viz)
-* [🔮 Predicting match outcome]()
-* [🔧 Setup](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-setup)
+* [🔮 Predictive model](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-predicting-match-outcome)
 
 ## ℹ️ About 
 The UFC (Ultimate Fighting Championship) is a global mixed martial arts (MMA) organization, hosting weekly competitive events that showcase fighters from a range of weight classes and backgrounds. 
@@ -16,6 +16,12 @@ The UFC (Ultimate Fighting Championship) is a global mixed martial arts (MMA) or
 This repository contains code and resources relating to the UFC. This includes one of the most comprehensive public UFC datasets available, encompassing official match outcomes and history compiled from the UFC, fighter statistics, as well as historic betting odds. 
 
 The purpose of compiling these datasets is for personal interest for data analysis and to test building a predictive model for match outcome on, as well as being publicly available for external interest.
+
+## 🔧 Setup 
+Dependency management - Poetry (more actively maintained) or pip (`requirements.txt` exists but less frequently updated)
+```
+poetry install
+```
 
 ## 📁 Datasets
 
@@ -69,15 +75,15 @@ The raw datasets (scraped from the official [UFC](ufcstats.com) website and [bet
 
 ## 📊 EDA / Data viz
 Some interesting insights and visualisations are shared here:
-* Age and average strikes landed PM are key contributors to likelihood of victory; the younger fighter or better striker won ~60% of matches historically.  <br />
+* Age and average strikes landed PM are key contributors to likelihood of victory; the younger fighter or better striker had an edge and won ~60% of matches historically.  <br />
   ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb)
 
 * Historic likelihood of the betting favourite winning increases from a little over 50%, to over 75% as the difference in decimal odds exceeds 2.0.  <br />
   ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/9ec6cc29-bcb2-4164-b076-c6a7b2049059)
 
-## 🔮 Predicting match outcome
+## 🔮 Predictive model
 🚧 Development of a machine learning model to test how well a model can predict UFC match outcome is WiP
-* Initial PoCs (GBM, logistic regression) attempting to predict match outcome from fighter attributes (had not yet scraped betting odds) saw accuracy of ~65%.
+* Initial PoCs (GBM, logistic regression) attempting to predict match outcome from fighter attributes (had not yet scraped betting odds) saw accuracy of ~65%
 * This is comparable to a betting strategy of always picking the favourite ([65%](https://www.mmahive.com/ufc-favorites-vs-underdogs/)), which suggests that betting market sentiment may capture most information the model is currently trained on.
 * Significant opportunity still to iterate with further testing of features:
     * Fight win streak, finish rate (knockouts, submissions)
@@ -89,10 +95,4 @@ Some interesting insights and visualisations are shared here:
 | --- | --- | --- | --- |
 | Feature selection | Initial GBM testing / feature selection | • Delta (of fighter1 and fighter2) features capture as much signal as individual features  <br /> • Highest importance features related to delta of striking stats, and surprisingly also difference in age <br /> • Lowest importance features were height, reach, stance and weight class. Takedown accuracy was surprisingly less important, compared to other features e.g. takedown attempts  <br /> • Feature importance (all delta features) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/8090e1db-e46e-4714-bced-4a93da2293ae) <br /> • SHAP values (after removing less important delta features by RFECV) ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/ed7a601d-6b58-4d55-9a05-e4f99cd65e84)| `notebooks\ml experiments\20231012 Initial GBM test.ipynb` |
 | Model selection | Initial GBM testing / feature selection | • Initial tests saw accuracy of 64-65% <br /> • Variation in accuracy depending on hyperparameter selection,  different parameters across folds - may need tuning | `notebooks\ml experiments\20231012 Initial GBM test.ipynb` |
-
-## 🔧 Setup 
-Dependency management - Poetry (more frequently updated) or pip (`requirements.txt` exists but less frequently updated)
-```
-poetry install
-```
 
