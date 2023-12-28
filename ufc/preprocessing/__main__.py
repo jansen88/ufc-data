@@ -4,7 +4,7 @@ import numpy as np
 from ufc import load_data, constants
 from ufc.preprocessing import clean_raw_data as clean_data
 from ufc.preprocessing import create_complete_dataset as complete_data
-from ufc.preprocessing import feature_extraction, feature_engineering
+from ufc.preprocessing import feature_engineering
 
 if __name__ == "__main__":
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         cleaned_odds,
         cleaned_fighters
     )
-    ufc_df.to_csv("./data/complete_ufc_data.csv")
+    ufc_df.to_csv("./data/complete_ufc_data.csv", index=False)
 
     # prepped_data = feature_extraction.prep_data_for_modelling(cleaned_events, cleaned_fighters)
     

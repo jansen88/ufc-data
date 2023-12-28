@@ -9,5 +9,8 @@ def read_scraped_fighters():
 def read_scraped_odds():
     return pd.read_csv("./data/odds_raw.csv")
 
-def read_prepped_data():
-    return pd.read_csv("./data/all_data_final.csv")
+# def read_prepped_data():
+#     return pd.read_csv("./data/all_data_final.csv")
+
+def read_ufc_data():
+    return pd.read_csv("./data/complete_ufc_data.csv")

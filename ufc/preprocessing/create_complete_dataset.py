@@ -62,7 +62,8 @@ def combine_all_datasets(cleaned_events, cleaned_odds, cleaned_fighters):
     cleaned_odds.rename(
         {
             "timestamp": "odds_extract_ts",
-            "date": "event_date"
+            "date": "event_date",
+            "outcome": "betting_outcome",
         },
         axis=1, inplace=True
     )
@@ -97,7 +98,7 @@ def combine_all_datasets(cleaned_events, cleaned_odds, cleaned_fighters):
         cleaned_odds[[
                         "event_date", "match_name",
                             "favourite", "underdog",
-                            "favourite_odds", "underdog_odds",
+                            "favourite_odds", "underdog_odds", "betting_outcome",
                             "odds_extract_ts"
                     ]],
         on = ["event_date", "match_name"],
@@ -138,6 +139,7 @@ def combine_all_datasets(cleaned_events, cleaned_odds, cleaned_fighters):
             "underdog",
             "favourite_odds",
             "underdog_odds",
+            "betting_outcome", # retain both to make querying a bit easier
             "outcome",
             "method",
             "round",
