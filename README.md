@@ -4,10 +4,10 @@
 
 ## 📖 Contents
 * [ℹ️ About ](https://github.com/jansen88/ufc-data?tab=readme-ov-file#-about)
-* [🔧 Setup](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-setup)
-* [📁 Datasets](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-datasets)
+* [🔧 Setup](https://github.com/jansen88/ufc-data?tab=readme-ov-file#-setup)
+* [📁 Datasets](https://github.com/jansen88/ufc-data/?tab=readme-ov-file#-datasets)
 * [⚒️ Data extraction](https://github.com/jansen88/ufc-data?tab=readme-ov-file#-data-extraction))
-* [📊 EDA / Data viz](https://github.com/jansen88/ufc-data/tree/master?tab=readme-ov-file#-eda--data-viz)
+* [📊 EDA / Data viz](https://github.com/jansen88/ufc-data?tab=readme-ov-file#-eda--data-viz)
 * [🔮 Predictive model](https://github.com/jansen88/ufc-data?tab=readme-ov-file#-predictive-model)
 
 ## ℹ️ About 
