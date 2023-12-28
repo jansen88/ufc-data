@@ -25,10 +25,10 @@ poetry install
 
 ## 📁 Datasets
 
-`complete_ufc_data` captures a comprehensive UFC dataset uniquely combining 30 years of match history (from 1994), individual figher statistics and 9 years of historic betting odds (from Nov 2014).
+`/data/complete_ufc_data.csv` captures a comprehensive UFC dataset uniquely combining 30 years of match history (from 1994), individual figher statistics and 9 years of historic betting odds (from Nov 2014).
 
 <details open>
-  <summary>Data dictionary</summary>
+  <summary><strong>Data dictionary</strong></summary>
 
 
   | Column | Sample values| Description | Source |
@@ -75,11 +75,10 @@ The raw datasets (scraped from the official [UFC](ufcstats.com) website and [bet
 
 ## 📊 EDA / Data viz
 Some interesting insights and visualisations are shared here:
-* Age and average strikes landed PM are key contributors to likelihood of victory; the younger fighter or better striker had an edge and won ~60% of matches historically.  <br />
-  ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb)
-
-* Historic likelihood of the betting favourite winning increases from a little over 50%, to over 75% as the difference in decimal odds exceeds 2.0.  <br />
-  ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/9ec6cc29-bcb2-4164-b076-c6a7b2049059)
+| Insight | Visualisation |
+| --- | --- |
+| Age and average strikes landed PM are highly related to historic likelihood of victory; the younger fighter or better striker had an edge and won ~60% of matches. |  ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/3b1999d0-efd5-4a9e-87fb-d3a2f29f29cb) |
+| Historic likelihood of the betting favourite winning increases from a little over 50%, to over 75% as the difference in decimal odds exceeds 2.0. <br /> This increased as the difference in odds increased, with ~90% of matches where the the delta exceeded 4.5 won by the favourite. | ![image](https://github.com/jansen88/ufc-match-predictor/assets/94953297/9ec6cc29-bcb2-4164-b076-c6a7b2049059) |
 
 ## 🔮 Predictive model
 🚧 Development of ML model to test how well match outcome can be predicted based on fighter stats is WiP:
